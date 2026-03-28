@@ -29,5 +29,19 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ]
     }
+  },
+
+  // 构建优化
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'es2020'
+      }
+    }
+  },
+
+  // 兼容 Vercel
+  future: {
+    compatibilityVersion: 4
   }
 })
