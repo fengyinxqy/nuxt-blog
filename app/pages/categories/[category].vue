@@ -43,12 +43,18 @@ interface Post {
 const route = useRoute()
 const category = route.params.category as string
 
-const { data: posts } = await useAsyncData<Post[]>(`category-${category}`, async () => {
+// 获取所有文章，然后在前端过滤
+const { data: allPosts } = await useAsyncData<Post[]>(`category-${category}`, async () => {
   const result = await queryCollection('posts')
-    .where({ category: { $eq: category } })
     .order('date', 'DESC')
     .all()
   return result as unknown as Post[]
+})
+
+// 在前端过滤分类
+const posts = computed(() => {
+  if (!allPosts.value) return []
+  return allPosts.value.filter(p => p.category === category)
 })
 
 const formatDate = (date: string) => {
