@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #fafaf9;
+    color: #1c1917;
+  }
+
+  ::selection {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+
+  /* Shiki 代码高亮 */
+  pre.shiki,
+  code.shiki {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: #1e1e1e !important;
+    color: #d4d4d4;
+  }
+
+  pre.shiki {
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  pre.shiki code {
+    background: transparent !important;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* 行内代码 */
+  :not(pre) > code.shiki {
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
+}
