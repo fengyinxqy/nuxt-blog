@@ -1,24 +1,12 @@
 <template>
   <div class="comment-section">
-    <script src="https://giscus.app/client.js"
-      :data-repo="config.repo"
-      :data-repo-id="config.repoId"
-      :data-category="config.category"
-      :data-category-id="config.categoryId"
-      :data-mapping="config.mapping"
-      :data-strict="config.strict"
-      :data-reactions-enabled="config.reactionsEnabled"
-      :data-emit-metadata="config.emitMetadata"
-      :data-input-position="config.inputPosition"
-      :data-theme="config.theme"
-      :data-lang="config.lang"
-      crossorigin="anonymous"
-      async
-    />
+    <div ref="commentRef" id="giscus-container"></div>
   </div>
 </template>
 
 <script setup lang="ts">
+const commentRef = ref<HTMLElement | null>(null)
+
 // Giscus 配置 - https://giscus.app/zh-CN
 const config = {
   repo: 'fengyinxqy/nuxt-blog',
@@ -33,6 +21,28 @@ const config = {
   theme: 'preferred_color_scheme',
   lang: 'zh-CN'
 }
+
+onMounted(() => {
+  const script = document.createElement('script')
+  script.src = 'https://giscus.app/client.js'
+  script.setAttribute('data-repo', config.repo)
+  script.setAttribute('data-repo-id', config.repoId)
+  script.setAttribute('data-category', config.category)
+  script.setAttribute('data-category-id', config.categoryId)
+  script.setAttribute('data-mapping', config.mapping)
+  script.setAttribute('data-strict', config.strict)
+  script.setAttribute('data-reactions-enabled', config.reactionsEnabled)
+  script.setAttribute('data-emit-metadata', config.emitMetadata)
+  script.setAttribute('data-input-position', config.inputPosition)
+  script.setAttribute('data-theme', config.theme)
+  script.setAttribute('data-lang', config.lang)
+  script.setAttribute('crossorigin', 'anonymous')
+  script.async = true
+
+  if (commentRef.value) {
+    commentRef.value.appendChild(script)
+  }
+})
 </script>
 
 <style scoped>
