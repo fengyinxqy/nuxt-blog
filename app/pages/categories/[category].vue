@@ -32,17 +32,6 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-const category = route.params.category as string
-
-const { data: posts } = await useAsyncData(`category-${category}`, async () => {
-  const result = await queryCollection('posts')
-    .where({ category: { $eq: category } })
-    .order('date', 'DESC')
-    .all()
-  return result as unknown as Post[]
-})
-
 interface Post {
   path: string
   title: string
@@ -50,6 +39,17 @@ interface Post {
   category: string
   date: string
 }
+
+const route = useRoute()
+const category = route.params.category as string
+
+const { data: posts } = await useAsyncData<Post[]>(`category-${category}`, async () => {
+  const result = await queryCollection('posts')
+    .where({ category: { $eq: category } })
+    .order('date', 'DESC')
+    .all()
+  return result as unknown as Post[]
+})
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('zh-CN', {

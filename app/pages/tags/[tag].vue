@@ -34,17 +34,6 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-const tag = route.params.tag as string
-
-const { data: posts } = await useAsyncData(`tag-${tag}`, async () => {
-  const result = await queryCollection('posts')
-    .where({ tags: { $contains: tag } })
-    .order('date', 'DESC')
-    .all()
-  return result as unknown as Post[]
-})
-
 interface Post {
   path: string
   title: string
@@ -53,6 +42,21 @@ interface Post {
   tags: string[]
   date: string
 }
+
+const route = useRoute()
+const tag = route.params.tag as string
+
+const { data: allPosts } = await useAsyncData<Post[]>(`tag-${tag}`, async () => {
+  const result = await queryCollection('posts')
+    .order('date', 'DESC')
+    .all()
+  return result as unknown as Post[]
+})
+
+const posts = computed(() => {
+  if (!allPosts.value) return []
+  return allPosts.value.filter(p => p.tags?.includes(tag))
+})
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('zh-CN', {
